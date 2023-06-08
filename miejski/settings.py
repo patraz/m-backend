@@ -31,7 +31,7 @@ SECRET_KEY = "django-insecure-=(d9f0=8pqvsdq9uks7us%pg*fm%*8i0!2&4d98&wq%!b++gbw
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+CSRF_TRUSTED_ORIGINS = ['https://sciek-django.captain.patraz.online/','https://*.127.0.0.1']
 ALLOWED_HOSTS = [env('ALLOWED_HOSTS')]
 
 
@@ -67,9 +67,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "miejski.urls"
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8080',
-]
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:8080',
+# ]
 
 TEMPLATES = [
     {
