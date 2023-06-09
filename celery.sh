@@ -1,1 +1,1 @@
-celery -A miejski worker --beat --scheduler django_celey_beat.schedulers.DatabaseScheduler -l info
+celery -A miejski worker --beat --scheduler django_celery_beat.schedulers.DatabaseScheduler -l info
