@@ -32,7 +32,7 @@ SECRET_KEY = "django-insecure-=(d9f0=8pqvsdq9uks7us%pg*fm%*8i0!2&4d98&wq%!b++gbw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 CSRF_TRUSTED_ORIGINS = ['https://sciek-django.captain.patraz.online','https://*.127.0.0.1']
-ALLOWED_HOSTS = [env('ALLOWED_HOSTS')]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', env('ALLOWED_HOSTS')]
 
 
 # Application definition
@@ -67,9 +67,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "miejski.urls"
 
-# CORS_ALLOWED_ORIGINS = [
-#     'http://localhost:8080',
-# ]
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8080',
+]
 
 TEMPLATES = [
     {
@@ -95,7 +95,7 @@ WSGI_APPLICATION = "miejski.wsgi.application"
 
 
 
-if TEST:
+if DEBUG:
     DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -169,8 +169,8 @@ OPENAI_API = env('OPENAI_API')
 
 CELERY_BROKER_URL = env('CELERY_BROKER_URL')
 CELERY_BEAT_SCHEDULE = {
-    'scrape_definitions':{
+    'scrape_definitions': {
         'task': 'dictionary.tasks.scrape_words',
-        'schedule': crontab(hour='*/3')
+        'schedule': crontab(minute='0', hour='*/3'),
     }
 }

@@ -39,7 +39,6 @@ def scrape_words():
             dict = response['choices'][0]['message']['content']
             res = ast.literal_eval(dict)
             res['word'] = word
-            print(res, type(res))
             list.append(res)
         except:
             pass
