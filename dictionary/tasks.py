@@ -43,6 +43,7 @@ def scrape_words():
         except:
             pass
     for word in list:
-        Definition.objects.create(word=word['word'], meaning=word['meaning'])
+        if not Definition.objects.filter(word=word['word']).exists():
+            Definition.objects.create(word=word['word'], meaning=word['meaning'])
     print(list)
     return list
