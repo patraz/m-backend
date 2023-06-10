@@ -1,4 +1,6 @@
 from django.http import HttpResponse
+from rest_framework import viewsets
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
 from rest_framework.generics import (
     ListAPIView,
@@ -7,16 +9,50 @@ from rest_framework.generics import (
     UpdateAPIView,
     DestroyAPIView
 )
+
 from rest_framework.response import Response
-import random
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
-# Create your views here.
+
+
 from .serializers import DefinitionSerializer, SearchDefinitionSerializer
 from .models import Definition
 from .scrape import scrape_words
 
+import random
+
 from django.db.models import Q
 
+
+class PostPagination(PageNumberPagination):
+    page_size = 15
+
+# class PostViewSet(viewsets.ModelViewSet):
+#     pagination_class = PostPagination
+#     serializer_class = SearchDefinitionSerializer
+
+#     def get_queryset(self):
+        
+#         print(self.request.GET.items())
+#         for param, value in self.request.GET.items():
+#             print(f"Parameter: {param}, Value: {value}")
+        # Access request.GET parameters
+        # letter = self.request.GET.get('a')
+        # queryset = Definition.objects.filter(word__startswith=letter)
+        # # Use the param_value in queryset filtering if needed
+        
+        # return queryset
+
+class DefinitionListViewByLetter(ListAPIView):
+    pagination_class = PostPagination
+    permission_classes = (AllowAny, )
+    serializer_class = DefinitionSerializer
+
+    def get_queryset(self):
+        letter = self.kwargs.get('letter')
+        if letter:
+            queryset = Definition.objects.filter(word__startswith=letter)
+        
+        return queryset
 
 def add_scraped_words(request):
     word_list = scrape_words(1)
