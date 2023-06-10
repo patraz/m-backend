@@ -68,7 +68,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = "miejski.urls"
 
 CORS_ALLOWED_ORIGINS = [
-    'https://sciek-django.captain.patraz.online',
+    'https://sciek-vue.captain.patraz.online',
 ]
 
 TEMPLATES = [
