@@ -70,7 +70,7 @@ ROOT_URLCONF = "miejski.urls"
 CORS_ALLOWED_ORIGINS = [
     'https://sciek-vue.captain.patraz.online',
     'http://127.0.0.1:8080',
-    'http://sciek.patraz.online',
+    'https://sciek.patraz.online',
 ]
 
 TEMPLATES = [
