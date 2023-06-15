@@ -28,11 +28,23 @@ class PostPagination(PageNumberPagination):
     page_size = 5
 
     def get_paginated_response(self, data):
+        next_page = self.get_next_link()
+        previous_page = self.get_previous_link()
+        if next_page:
+            next_page = next_page.replace(
+                "http://", "https://")
+        if previous_page:
+            previous_page = previous_page.replace(
+                "http://", "https://")
+        
+
         return Response(
+            
+
             {
                 "count": self.page.paginator.count,
-                "next": self.get_next_link(),
-                "previous": self.get_previous_link(),
+                "next": next_page,
+                "previous": previous_page,
                 "current": self.page.number,
                 "pages": math.ceil(self.page.paginator.count/self.page_size),
                 "results": data
