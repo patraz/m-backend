@@ -1,3 +1,4 @@
+from typing import Any
 from django.http import HttpResponse
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
@@ -9,7 +10,7 @@ from rest_framework.generics import (
     UpdateAPIView,
     DestroyAPIView
 )
-
+import math
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 
@@ -24,24 +25,19 @@ from django.db.models import Q
 
 
 class PostPagination(PageNumberPagination):
-    page_size = 15
+    page_size = 5
 
-# class PostViewSet(viewsets.ModelViewSet):
-#     pagination_class = PostPagination
-#     serializer_class = SearchDefinitionSerializer
-
-#     def get_queryset(self):
-        
-#         print(self.request.GET.items())
-#         for param, value in self.request.GET.items():
-#             print(f"Parameter: {param}, Value: {value}")
-        # Access request.GET parameters
-        # letter = self.request.GET.get('a')
-        # queryset = Definition.objects.filter(word__startswith=letter)
-        # # Use the param_value in queryset filtering if needed
-        
-        # return queryset
-
+    def get_paginated_response(self, data):
+        return Response(
+            {
+                "count": self.page.paginator.count,
+                "next": self.get_next_link(),
+                "previous": self.get_previous_link(),
+                "current": self.page.number,
+                "pages": math.ceil(self.page.paginator.count/self.page_size),
+                "results": data
+            }
+        )
 class DefinitionListViewByLetter(ListAPIView):
     pagination_class = PostPagination
     permission_classes = (AllowAny, )
@@ -50,7 +46,7 @@ class DefinitionListViewByLetter(ListAPIView):
     def get_queryset(self):
         letter = self.kwargs.get('letter')
         if letter:
-            queryset = Definition.objects.filter(word__startswith=letter)
+            queryset = Definition.objects.filter(Q(word__istartswith=letter) | Q(word__istartswith=letter.upper())).order_by('word')
         
         return queryset
 

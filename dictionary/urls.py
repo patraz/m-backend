@@ -1,5 +1,6 @@
 from django.urls import path
-from dictionary import views
+from . import views
+
 
 urlpatterns = [
     path('', views.DefinitionListView.as_view(), name='definiton-list'),
