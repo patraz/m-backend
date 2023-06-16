@@ -15,15 +15,14 @@ def scrape_words(times):
         r = session.get(scraping_site)
         word = r.html.find('article')[0].find('header')[0].text
         meaning = r.html.find('article')[0].find('p')[0].text
-        example = r.html.find('article')[0].find('blockquote')[0].text
 
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": "Jesteś ekspertem od slangu i języka ulicznego. Przeredaguj ten tekst bez zmieniania slangowego słowa używając synonimów aby brzmiał profesjonalnie"},
+                {"role": "system", "content": "Jesteś ekspertem od slangu i języka ulicznego. Przeredaguj ten tekst prześmiewczo po polsku bez naruszania slangu używając synonimów aby brzmiał profesjonalnie"},
                 {"role": "user", "content": f"""
                 meaning: {meaning}
-                Only provide a  Python list compliant response  following this format without deviation.
+                Proszę dostarczyć odpowiedź zgodną z tym formatem.
                 {{
                 "meaning":meaning,
                 }}"""}],
@@ -34,11 +33,6 @@ def scrape_words(times):
             presence_penalty=0
         )
         print(response['choices'][0]['message']['content'])
-        # dict = {
-        #     'word': word,
-        #     'meaning' : meaning,
-        #     'example' : example
-        # }
         
         dict = response['choices'][0]['message']['content']
         res = ast.literal_eval(dict)
