@@ -24,22 +24,19 @@ def scrape_words():
                 model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": "Jesteś ekspertem od slangu i języka ulicznego. Przeredaguj ten tekst bez zmieniania slangowego słowa używając synonimów aby brzmiał profesjonalnie"},
-                    {"role": "user", "content": f"""
-                    meaning: {meaning}
-                    Only provide a  Python list compliant response  following this format without deviation.
-                    {{
-                    "meaning":meaning,
-                    }}"""}],
+                    {"role": "user", "content": f"""{meaning}"""}],
                 temperature=0,
                 max_tokens=3877,
                 top_p=1,
                 frequency_penalty=0,
                 presence_penalty=0
             )
-            dict = response['choices'][0]['message']['content']
-            res = ast.literal_eval(dict)
-            res['word'] = word
-            list.append(res)
+            word_dict = dict()
+            meaning = response['choices'][0]['message']['content']
+            # res = ast.literal_eval(dict)
+            word_dict['meaning'] = meaning
+            word_dict['word'] = word
+            list.append(word_dict)
         except:
             pass
     for word in list:
